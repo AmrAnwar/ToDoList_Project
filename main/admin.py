@@ -18,7 +18,7 @@ class SublistInline(admin.TabularInline):
 
 class TaskListInline(admin.TabularInline):
     fieldsets = (
-        (None,{
+        (None, {
             'fields': ('title',)
         }),
     )
