@@ -3,8 +3,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 from .list import List
-from .sublist import Sublist
-from django.conf import settings
+# from .sublist import Sublist
 
 # Create your models here.
 
@@ -27,6 +26,14 @@ class Task(models.Model):
     def __unicode__(self):
         return "sublist %s:%s"%(self.title, self.user)
 
-    @property
-    def tasks(self):
-        return Sublist.objects.filter(task=self)
+    # @property
+    # def tasks(self):
+    #     return Sublist.objects.filter(task=self)
+    #
+    # @property
+    # def tasks(self):
+    #     return Task.objects.filter(list=self.list)
+
+
+def get_list_tasks(list):
+    return Task.objects.filter(list=list)

@@ -22,3 +22,7 @@ class Sublist(models.Model):
 
     def __unicode__(self):
         return "sublist %s:%s"%(self.title, self.task)
+
+
+def get_task_sublist(task):
+    return Sublist.objects.filter(task=task)
