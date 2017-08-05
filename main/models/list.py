@@ -7,7 +7,12 @@ from django.db import models
 
 class ListManager(models.Manager):
     def active(self, *args, **kwargs):
-        return super(ListManager, self).filter(archived=True)
+        try:
+            if kwargs['user']:
+                user = kwargs['user']
+                return super(ListManager, self).filter(archived=False, user=user)
+        except:
+            return super(ListManager, self).filter(archived=False)
 
 
 class List(models.Model):
@@ -16,11 +21,10 @@ class List(models.Model):
     archived = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
 
-
     objects = ListManager()
 
     class Meta:
         ordering = ["-timestamp"]
 
     def __unicode__(self):
-        return "list %s:%s"%(self.title, self.user)
+        return "list %s:%s" % (self.title, self.user)
