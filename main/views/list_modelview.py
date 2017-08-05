@@ -20,6 +20,9 @@ class ListModelViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    # def perform_update(self, serializer):
+        
+
     @detail_route(methods=['post'], url_path='create')
     def create_task(self, request, pk=None):
         serializer = TaskModelSerializer(data=request.data)
@@ -29,6 +32,5 @@ class ListModelViewSet(viewsets.ModelViewSet):
             task = Task.objects.create(**serializer.validated_data)
 
             return Response(TaskModelSerializer(task).data, status=201)
-
         else:
-            return serializer.errors
+            return Response(serializer.errors)

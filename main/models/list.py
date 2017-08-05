@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 # Create your models here.
+from django.conf import settings
 
 
 class ListManager(models.Manager):
@@ -20,7 +21,8 @@ class List(models.Model):
     title = models.CharField(null=False, blank=False, max_length=100)
     archived = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
-
+    users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True,
+                                   related_name="list_users")
     objects = ListManager()
 
     class Meta:

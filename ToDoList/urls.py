@@ -20,7 +20,7 @@ from main import views
 router = DefaultRouter()
 router.register(r'lists', views.ListModelViewSet, base_name='lists')
 router.register(r'tasks', views.TaskModelViewSet, base_name='tasks')
-
+router.register(r'sublists', views.SublistModelViewSet, base_name='sublists')
 urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^admin/', admin.site.urls),

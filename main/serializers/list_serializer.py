@@ -10,7 +10,7 @@ class ListModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = List
-        fields = ('id', 'title', 'timestamp', 'archived', 'user', "tasks")
+        fields = ('id', 'title', 'timestamp', 'archived', 'user', "tasks", "users")
 
     def get_tasks(self, obj):
         # return get_data(obj=obj, serializer=TaskModelSerializer, Child=Task)

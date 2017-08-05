@@ -3,7 +3,6 @@ from django.test import Client, TestCase
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.utils import timezone
-
 from ..models import List, Task, Sublist
 from helper import view_test, create_patch
 from django.forms.models import model_to_dict
@@ -18,18 +17,15 @@ class TestListView(TestCase):
         self.user.set_password('password')
         self.user.save()
         self.list = List.objects.create(
-            id=1,
             user=self.user,
             title="List TEST",
         )
         self.task = Task.objects.create(
-            id=1,
             user=self.user,
             title="Task TEST",
             list=self.list,
         )
         self.sublist = Sublist.objects.create(
-            id=1,
             title="SubList TEST",
             task=self.task
         )
@@ -55,9 +51,9 @@ class TestListSecure(TestListView):
     def test_create_task(self):
         create_patch(self=self, test_obj="tasks", url=self.create_task)
 
-    def test_create_subtask(self):
-        pass
-        create_patch(self=self, test_obj="subtasks", url=self.create_subtask)
+    def test_create_sublist(self):
+        # res = self.client.get(reverse("sublists-list"))
+        create_patch(self=self, test_obj="sublists", url=self.create_subtask)
 
     # def test_tasks(self):
     #     pass

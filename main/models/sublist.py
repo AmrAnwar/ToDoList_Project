@@ -8,7 +8,7 @@ from .task import Task
 
 class SubListManager(models.Manager):
     def active(self, *args, **kwargs):
-        return super(SubListManager, self).filter(archived=True)
+        return super(SubListManager, self).filter(archived=False)
 
 
 class Sublist(models.Model):
@@ -17,11 +17,12 @@ class Sublist(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     task = models.ForeignKey(Task, related_name="task_sublist")
 
+    objects = SubListManager()
     class Meta:
         ordering = ["-timestamp"]
 
     def __unicode__(self):
-        return "sublist %s:%s"%(self.title, self.task)
+        return "%s"% self.title
 
 
 def get_task_sublist(task):

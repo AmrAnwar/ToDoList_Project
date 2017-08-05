@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse
 import json
+from ..models import Sublist
 
 
 def view_test(**kwargs):
@@ -29,25 +30,28 @@ def view_test(**kwargs):
 
 
 def create_patch(**kwargs):
-        test_obj = kwargs['test_obj']
-        self = kwargs['self']
-        url = kwargs['url']
-        data = {
-            'title': "test"
-        }
-        res = self.client.post(url,
-                               data=json.dumps(data),
-                               content_type='application/json')
-        self.assertEqual(res.status_code, 201)
-        res_id = res.data.get("id")
-        data = {
-            'title': "re-test",
-        }
-        task_url_detail = reverse("%s-detail" % test_obj, kwargs={'pk': int(res_id)})
-        res = self.client.get(task_url_detail)
-        self.assertEqual(res.status_code, 200)
-        res = self.client.patch(task_url_detail,
-                                data=json.dumps(data),
-                                content_type='application/json')
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(res.data.get("title"), "re-test")
+    # for i,v in kwargs.items():
+    #     print i, v
+    test_obj = kwargs['test_obj']
+    self = kwargs['self']
+    url = kwargs['url']
+    data = {
+        'title': "tester"
+    }
+    res = self.client.post(url,
+                           data=json.dumps(data),
+                           content_type='application/json')
+    self.assertEqual(res.status_code, 201)
+
+    res_id = res.data.get("id")
+    data = {
+        'title': "re-test",
+    }
+    url_detail = reverse("%s-detail" % test_obj, kwargs={'pk': (res_id)})
+    res = self.client.get(url_detail)
+    self.assertEqual(res.status_code, 200)
+    res = self.client.patch(url_detail,
+                            data=json.dumps(data),
+                            content_type='application/json')
+    self.assertEqual(res.status_code, 200)
+    self.assertEqual(res.data.get("title"), "re-test")
