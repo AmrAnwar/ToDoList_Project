@@ -17,6 +17,9 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 from main import views
+from django.conf.urls.static import static
+
+import settings
 
 router = DefaultRouter()
 router.register(r'lists', views.ListModelViewSet, base_name='lists')
@@ -27,3 +30,6 @@ urlpatterns = [
     url(r'^add/(?P<list_id>\d+)/(?P<user_id>\d+)/$',views.AddToList.as_view(), name="add-list"),
     url(r'^admin/', admin.site.urls),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
