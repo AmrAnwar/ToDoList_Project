@@ -7,21 +7,23 @@ from ..serializers import ListModelSerializer, TaskModelSerializer
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from django.core.urlresolvers import reverse
-
+from ..permissions import IsInList
+from rest_framework.permissions import IsAuthenticated
+from ..models import get_user_lists
 
 class ListModelViewSet(viewsets.ModelViewSet):
     serializer_class = ListModelSerializer
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        user = self.request.user
-        qs = List.objects.active(user=user)
-        return qs
+        # user = self.request.user
+        # qs = List.objects.active(user=user)
+        return get_user_lists(user=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
     # def perform_update(self, serializer):
-        
 
     @detail_route(methods=['post'], url_path='create')
     def create_task(self, request, pk=None):

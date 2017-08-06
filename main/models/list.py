@@ -30,3 +30,7 @@ class List(models.Model):
 
     def __unicode__(self):
         return "list %s:%s" % (self.title, self.user)
+
+
+def get_user_lists(user=None):
+    return [list for list in List.objects.active() if user in list.users.all()]

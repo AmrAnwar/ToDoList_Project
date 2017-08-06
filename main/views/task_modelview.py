@@ -6,10 +6,13 @@ from ..models import Task, Sublist
 from ..serializers import TaskFullModelSerializer, SubListModelSerializer
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
+from ..permissions import IsInTask
+from rest_framework.permissions import IsAuthenticated
 
 
 class TaskModelViewSet(viewsets.ModelViewSet):
     serializer_class = TaskFullModelSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
