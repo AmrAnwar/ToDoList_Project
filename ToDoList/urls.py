@@ -17,11 +17,13 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 from main import views
+
 router = DefaultRouter()
 router.register(r'lists', views.ListModelViewSet, base_name='lists')
 router.register(r'tasks', views.TaskModelViewSet, base_name='tasks')
 router.register(r'sublists', views.SublistModelViewSet, base_name='sublists')
 urlpatterns = [
     url(r'^', include(router.urls)),
+    url(r'^add/(?P<list_id>\d+)/(?P<user_id>\d+)/$',views.AddToList.as_view(), name="add-list"),
     url(r'^admin/', admin.site.urls),
 ]

@@ -7,16 +7,19 @@ from ..serializers import ListModelSerializer, TaskModelSerializer
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from django.core.urlresolvers import reverse
-from ..permissions import IsInList
+from ..permissions import IsInList, IsOwner
 from rest_framework.permissions import IsAuthenticated
 from ..models import get_user_lists
+from django.core.mail import send_mail
 
 
 class ListModelViewSet(viewsets.ModelViewSet):
+
     serializer_class = ListModelSerializer
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
+
         qs = get_user_lists(user=self.request.user,)
         return qs
 
@@ -36,3 +39,4 @@ class ListModelViewSet(viewsets.ModelViewSet):
             return Response(TaskModelSerializer(task).data, status=201)
         else:
             return Response(serializer.errors)
+

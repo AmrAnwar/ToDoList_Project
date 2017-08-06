@@ -6,7 +6,7 @@ from django.utils import timezone
 from ..models import List, Task, Sublist
 from helper import view_test, create_patch
 from django.forms.models import model_to_dict
-
+from django.shortcuts import get_object_or_404
 
 class TestListView(TestCase):
     def setUp(self):
@@ -16,6 +16,12 @@ class TestListView(TestCase):
         )
         self.user.set_password('password')
         self.user.save()
+        self.guest =User(
+            username='guest',
+        )
+        self.guest.set_password("password")
+        self.guest.save()
+
         self.list = List.objects.create(
             user=self.user,
             title="List TEST",
@@ -54,6 +60,30 @@ class TestListSecure(TestListView):
     def test_create_sublist(self):
         # res = self.client.get(reverse("sublists-list"))
         create_patch(self=self, test_obj="sublists", url=self.create_subtask)
+
+    def test_add_list(self):
+        add_url = reverse("add-list", kwargs={'list_id': self.list.id,
+                                                   "user_id": self.guest.id})
+        response = self.client.get(add_url)
+        self.assertEqual(response.status_code, 200)
+        add = response.data.get('add')
+        self.assertEqual(add, True)
+
+        self.client.login(username='guest', password='password')
+        response = self.client.get(self.list_url)
+        self.assertEqual(len(response.data.get('results')), 1)
+
+        self.client.login(username='tester', password='password')
+        response = self.client.get(add_url)
+        self.assertEqual(response.status_code, 200)
+        add = response.data.get('add')
+        self.assertEqual(add, False)
+
+        self.client.login(username='guest', password='password')
+        response = self.client.get(self.list_url)
+        self.assertEqual(len(response.data.get('results')), 0)
+
+
 
     # def test_tasks(self):
     #     pass
