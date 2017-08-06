@@ -58,7 +58,6 @@ class TestListSecure(TestListView):
         create_patch(self=self, test_obj="tasks", url=self.create_task)
 
     def test_create_sublist(self):
-        # res = self.client.get(reverse("sublists-list"))
         create_patch(self=self, test_obj="sublists", url=self.create_subtask)
 
     def test_add_list(self):
@@ -82,30 +81,3 @@ class TestListSecure(TestListView):
         self.client.login(username='guest', password='password')
         response = self.client.get(self.list_url)
         self.assertEqual(len(response.data.get('results')), 0)
-
-
-
-    # def test_tasks(self):
-    #     pass
-    #     # data = {
-    #     #     "title": "test",
-    #     #     "list": model_to_dict(self.list),
-    #     #     "user": model_to_dict(self.user),
-    #     # }
-    #     # response = self.client.post(self.task_url, data=json.simplejson.dumps(data),
-    #     #                             content_type='application/json')
-    #     # self.assertEqual(response.status_code, 201)
-    #     # self.assertEqual(response.data.get('user'), self.user.id)
-    #     # re_data = {
-    #     #     "title": "re-test",
-    #     # }
-    #     # detail_url = "%s-detail" % "tasks"
-    #     # new_list_url = reverse(detail_url,
-    #     #                        kwargs={'pk': response.data.get('id')})
-    #     # response = self.client.patch(new_list_url,
-    #     #                              json.dumps(re_data),
-    #     #                              content_type='application/json')
-    #     # self.assertEqual(response.status_code, 200)
-    #     # self.assertEqual(response.data.get('title'), 're-test')
-    #     #
-    #     # # view_test(test_obj="tasks", self=self, url=self.task_url, data=data)

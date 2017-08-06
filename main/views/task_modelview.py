@@ -35,3 +35,17 @@ class TaskModelViewSet(viewsets.ModelViewSet):
             return Response(SubListModelSerializer(sublist).data, status=201)
         else:
             return Response(serializer.errors)
+
+    @detail_route(methods=['post'], url_path='create-comment')
+    def create_comment(self, request, pk=None):
+        try:
+            task = Task.objects.get(pk=pk)
+        except:
+            return Response(status=404)
+        serializer = CommentSerilizer(data=request.data)
+        if serializer.is_valid():
+            serializer.validated_data['task'] = task
+            sublist = Sublist.objects.create(**serializer.validated_data)
+            return Response(SubListModelSerializer(sublist).data, status=201)
+        else:
+            return Response(serializer.errors)

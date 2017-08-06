@@ -15,12 +15,8 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'stmp.gmail.com'
-EMAIL_HOST_USER = 'amranwar945@gmail.com'
-EMAIL_HOST_PASSWORD = 'algorithmamr00',
-EMAIL_PORT = 587
 
+my_password = "amryu12345"
 # send_mail(
 #     'Subject here',
 #     'Here is the message.',
@@ -138,3 +134,20 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 2
 }
 STATIC_URL = '/static/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'amranwar945@gmail.com'
+# EMAIL_HOST_PASSWORD = my_password,
+# EMAIL_PORT = 587
+# ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp-mail.outlook.com'
+EMAIL_HOST_USER = 'amranwar945@outlook.sa'
+EMAIL_HOST_PASSWORD = my_password
+EMAIL_PORT = 25
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+

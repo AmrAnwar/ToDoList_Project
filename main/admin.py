@@ -8,6 +8,7 @@ from .models import (
     List,
     Task,
     Sublist,
+    Comment,
 )
 
 
@@ -38,5 +39,7 @@ class TaskAdmin(admin.ModelAdmin):
     inlines = [SublistInline]
 
 
+
 admin.site.register(List, ListAdmin)
 admin.site.register(Task, TaskAdmin)
+admin.site.register(Comment)
