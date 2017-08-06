@@ -11,14 +11,14 @@ from ..permissions import IsInList
 from rest_framework.permissions import IsAuthenticated
 from ..models import get_user_lists
 
+
 class ListModelViewSet(viewsets.ModelViewSet):
     serializer_class = ListModelSerializer
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        # user = self.request.user
-        # qs = List.objects.active(user=user)
-        return get_user_lists(user=self.request.user)
+        qs = get_user_lists(user=self.request.user,)
+        return qs
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

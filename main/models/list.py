@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
-# Create your models here.
 from django.conf import settings
 
 
@@ -33,4 +32,6 @@ class List(models.Model):
 
 
 def get_user_lists(user=None):
-    return [list for list in List.objects.active() if user in list.users.all()]
+    list_qs = [list.id for list in List.objects.active()
+            if user in list.users.all() or user == list.user]
+    return List.objects.filter(id__in=list_qs)
