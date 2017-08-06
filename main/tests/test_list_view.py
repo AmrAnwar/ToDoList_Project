@@ -8,6 +8,7 @@ from helper import view_test, create_patch
 from django.forms.models import model_to_dict
 from django.shortcuts import get_object_or_404
 
+
 class TestListView(TestCase):
     def setUp(self):
         self.client = Client()
@@ -16,7 +17,7 @@ class TestListView(TestCase):
         )
         self.user.set_password('password')
         self.user.save()
-        self.guest =User(
+        self.guest = User(
             username='guest',
         )
         self.guest.set_password("password")
@@ -39,7 +40,7 @@ class TestListView(TestCase):
         self.task_url_list = reverse("tasks-list")
         self.create_task = reverse("lists-create",
                                    kwargs={'pk': 1})
-        self.create_subtask = reverse("tasks-create",
+        self.create_subtask = reverse("tasks-sublist",
                                       kwargs={'pk': 1})
 
 
@@ -62,7 +63,7 @@ class TestListSecure(TestListView):
 
     def test_add_list(self):
         add_url = reverse("add-list", kwargs={'list_id': self.list.id,
-                                                   "user_id": self.guest.id})
+                                              "user_id": self.guest.id})
         response = self.client.get(add_url)
         self.assertEqual(response.status_code, 200)
         add = response.data.get('add')
@@ -81,3 +82,25 @@ class TestListSecure(TestListView):
         self.client.login(username='guest', password='password')
         response = self.client.get(self.list_url)
         self.assertEqual(len(response.data.get('results')), 0)
+
+
+class TestComments(TestListView):
+    def setUp(self):
+        super(TestComments, self).setUp()
+        self.client.login(username='tester', password='password')
+
+    def test_create_comment(self):
+        create_comment_url = reverse("tasks-comment",
+                                     kwargs={'pk': 1})
+        data = {
+            'content': "comment test"
+        }
+        res = self.client.post(create_comment_url,
+                               data=json.dumps(data),
+                               content_type='application/json')
+        self.assertEqual(res.status_code, 201)
+        res = self.client.get(reverse("tasks-detail",
+                                      kwargs={'pk': 1}))
+        comments = res.data.get('comments')
+        self.assertEqual(len(comments), 1)
+

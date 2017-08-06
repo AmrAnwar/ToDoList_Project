@@ -47,7 +47,7 @@ def create_patch(**kwargs):
     data = {
         'title': "re-test",
     }
-    url_detail = reverse("%s-detail" % test_obj, kwargs={'pk': (res_id)})
+    url_detail = reverse("%s-detail" % test_obj, kwargs={'pk': res_id})
     res = self.client.get(url_detail)
     self.assertEqual(res.status_code, 200)
     res = self.client.patch(url_detail,

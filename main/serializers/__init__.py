@@ -2,3 +2,4 @@ from list_serializer import ListModelSerializer
 from task_serializer import TaskModelSerializer
 from task_full_serializer import TaskFullModelSerializer
 from sublist_serializer import SubListModelSerializer
+from comment_serializer import CommentModelSerializer

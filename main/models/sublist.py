@@ -18,6 +18,7 @@ class Sublist(models.Model):
     task = models.ForeignKey(Task, related_name="task_sublist")
 
     objects = SubListManager()
+
     class Meta:
         ordering = ["-timestamp"]
 
