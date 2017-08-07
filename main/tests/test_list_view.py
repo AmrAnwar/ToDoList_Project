@@ -14,6 +14,7 @@ class TestListView(TestCase):
         self.client = Client()
         self.user = User(
             username='tester',
+            email='amranwar945@gmail.com',
         )
         self.user.set_password('password')
         self.user.save()
@@ -61,7 +62,7 @@ class TestListSecure(TestListView):
     def test_create_sublist(self):
         create_patch(self=self, test_obj="sublists", url=self.create_subtask)
 
-    def test_add_list(self):
+    def test_add_list_get(self):
         add_url = reverse("add-list", kwargs={'list_id': self.list.id,
                                               "user_id": self.guest.id})
         response = self.client.get(add_url)
@@ -78,6 +79,30 @@ class TestListSecure(TestListView):
         self.assertEqual(response.status_code, 200)
         add = response.data.get('add')
         self.assertEqual(add, False)
+
+        self.client.login(username='guest', password='password')
+        response = self.client.get(self.list_url)
+        self.assertEqual(len(response.data.get('results')), 0)
+
+    def test_add_post(self):
+        add_url = reverse("lists-add-user", kwargs={'pk': self.list.id})
+        remove_url = reverse("lists-remove-user", kwargs={'pk': self.list.id})
+        data = {
+            'user_id': self.guest.id
+        }
+        response = self.client.post(add_url, json.dumps(data), content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+
+        self.client.login(username='guest', password='password')
+        response = self.client.get(self.list_url)
+
+        self.assertEqual(len(response.data.get('results')), 1)
+
+        self.client.login(username='tester', password='password')
+        response = self.client.get(remove_url)
+        response = self.client.post(remove_url, json.dumps(data), content_type='application/json')
+
+        self.assertEqual(response.status_code, 200)
 
         self.client.login(username='guest', password='password')
         response = self.client.get(self.list_url)
@@ -104,3 +129,20 @@ class TestComments(TestListView):
         comments = res.data.get('comments')
         self.assertEqual(len(comments), 1)
 
+
+class TestListUnSecure(TestListView):
+    def setUp(self):
+        super(TestListUnSecure, self).setUp()
+
+    def test_view_without_login(self):
+        response = self.client.get(self.list_url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_login(self):
+        url = reverse("login")
+        data = {
+            'username': "tester",
+            'password': "password",
+        }
+        response = self.client.post(url, json.dumps(data), content_type='application/json')
+        self.assertEqual(response.status_code, 200)

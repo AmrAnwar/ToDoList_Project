@@ -19,6 +19,8 @@ class List(models.Model):
     user = models.ForeignKey(User, default=1, related_name="users")
     title = models.CharField(null=False, blank=False, max_length=100)
     archived = models.BooleanField(default=False)
+    finished = models.BooleanField(default=False)
+    finished_time = models.DateTimeField(auto_now_add=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True,
                                    related_name="list_users")
@@ -33,5 +35,5 @@ class List(models.Model):
 
 def get_user_lists(user=None):
     list_qs = [list.id for list in List.objects.active()
-            if user in list.users.all() or user == list.user]
+               if user in list.users.all() or user == list.user]
     return List.objects.filter(id__in=list_qs)

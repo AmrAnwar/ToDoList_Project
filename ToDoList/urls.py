@@ -27,7 +27,8 @@ router.register(r'tasks', views.TaskModelViewSet, base_name='tasks')
 router.register(r'sublists', views.SublistModelViewSet, base_name='sublists')
 urlpatterns = [
     url(r'^', include(router.urls)),
-    url(r'^add/(?P<list_id>\d+)/(?P<user_id>\d+)/$',views.AddToList.as_view(), name="add-list"),
+    url(r'^login/', views.LoginView.as_view(), name="login"),
+    url(r'^add/(?P<list_id>\d+)/(?P<user_id>\d+)/$', views.AddToList.as_view(), name="add-list"),
     url(r'^admin/', admin.site.urls),
 ]
 if settings.DEBUG:

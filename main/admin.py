@@ -9,6 +9,7 @@ from .models import (
     Task,
     Sublist,
     Comment,
+    UserProfile,
 )
 
 
@@ -29,7 +30,6 @@ class TaskListInline(admin.TabularInline):
 
 class ListAdmin(admin.ModelAdmin):
     list_display = ['title', 'timestamp']
-
     inlines = [TaskListInline]
 
 
@@ -38,8 +38,7 @@ class TaskAdmin(admin.ModelAdmin):
 
     inlines = [SublistInline]
 
-
-
 admin.site.register(List, ListAdmin)
 admin.site.register(Task, TaskAdmin)
 admin.site.register(Comment)
+admin.site.register(UserProfile)

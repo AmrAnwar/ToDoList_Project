@@ -10,7 +10,7 @@ def upload_location(instance, filename):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, default=1)
-    token = models.CharField(max_length=500)
+    token = models.CharField(max_length=500, null=True, blank=True)
     image = models.ImageField(
         upload_to=upload_location,
         null=True, blank=True,
@@ -20,9 +20,13 @@ class UserProfile(models.Model):
     height_field = models.IntegerField(default=0)
     width_field = models.IntegerField(default=0)
 
+    def __str__(self):
+        return "%s" % self.user.username
+
 
 def create_profile(sender, instance, **kwargs):
     if kwargs['created']:
-            UserProfile(user=instance).save()
+        UserProfile(user=instance).save()
+
 
 post_save.connect(create_profile, sender=User)
