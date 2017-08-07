@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render
 from rest_framework import viewsets
-from ..models import Task, Sublist
+from ..models import Sublist
 from ..serializers import SubListModelSerializer
-from rest_framework.decorators import detail_route
 
 
 class SublistModelViewSet(viewsets.ModelViewSet):
+    """
+    Model ViewSet For SubLists
+    """
     serializer_class = SubListModelSerializer
 
     def get_queryset(self):
-        user = self.request.user
-        qs = Sublist.objects.active()
-        return qs
+        return Sublist.objects.active()
 
 

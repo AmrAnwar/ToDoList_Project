@@ -1,25 +1,31 @@
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 
 
 def create_item(*args, **kwargs):
+    """
+    Help Function to create objects
+    :param args: if we want to handle string
+    :param kwargs: if we want to send vars
+    :return: 3 cases :
+                1- if obj pk not found, return: 404
+                2- if serializer not valid, return: serializer.errors
+                3- if serializer valid and obj pk found, return created task data ,201
+    """
     Serializer = kwargs['Serializer']
     pk = kwargs['pk']
     Model = kwargs['Model']
     ModelSerializer = kwargs['ModelSerializer']
     request = kwargs['request']
-    self = kwargs['self']
-    try:
-        object = Model.objects.get(pk=pk)
-    except:
-        return Response(status=404)
+    obj = get_object_or_404(Model, pk=pk)
     serializer = Serializer(data=request.data)
     if serializer.is_valid():
         if 'user' in args:
             serializer.validated_data['user'] = request.user
         if 'task' in args:
-            serializer.validated_data['task'] = object
+            serializer.validated_data['task'] = obj
         if 'list' in args:
-            serializer.validated_data['list'] = object
+            serializer.validated_data['list'] = obj
         created_obj = ModelSerializer.objects.create(**serializer.validated_data)
         return Response(Serializer(created_obj).data, status=201)
     else:

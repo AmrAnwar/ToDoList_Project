@@ -5,3 +5,4 @@ from sublist_serializer import SubListModelSerializer
 from comment_serializer import CommentModelSerializer
 from .login_serializer import LoginSerializer
 from .add_user_serializer import AddUserListSerializer
+from .email_list_serializer import EmailListSerializer

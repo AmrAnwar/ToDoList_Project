@@ -1,11 +1,13 @@
 from __future__ import unicode_literals
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from .task import Task
 
 
 class Comment(models.Model):
+    """
+    Comment Model to make Objects appears in Task Serializer and Task Detail view
+    """
     user = models.ForeignKey(User, default=1)
     content = models.TextField()
     parent = models.ForeignKey("self", null=True, blank=True)
@@ -20,11 +22,19 @@ class Comment(models.Model):
         return str(self.content[:10])
 
     def children(self):
+        """
+        filter Comments bt parent
+        :return:
+        """
         return Comment.objects.filter(parent=self)
 
     @property
     def is_parent(self):
+        """
+        check if comment has Parent
+        :return:
+        """
         if self.parent is not None:
-            return False
-        return True
+            return True
+        return False
 

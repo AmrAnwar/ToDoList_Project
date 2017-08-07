@@ -11,6 +11,12 @@ from .list import List
 
 class TaskManager(models.Manager):
     def active(self, *args, **kwargs):
+        """
+        filter archived objs or archived and specific user Lists
+        :param args:
+        :param kwargs:
+        :return: Queryset of lists filtered by archived element or archived and user
+        """
         try:
             if kwargs['user']:
                 user = kwargs['user']
@@ -20,6 +26,9 @@ class TaskManager(models.Manager):
 
 
 class Task(models.Model):
+    """
+    Task Model appears in List Detail and Has ModelViewSet
+    """
     user = models.ForeignKey(User, default=1, related_name="task_users")
     title = models.CharField(null=False, blank=False, max_length=100)
     archived = models.BooleanField(default=False)
@@ -31,16 +40,4 @@ class Task(models.Model):
         ordering = ["-timestamp"]
 
     def __unicode__(self):
-        return "task %s:%s:%s" % (self.title, self.list.title, self.user)
-
-        # @property
-        # def tasks(self):
-        #     return Sublist.objects.filter(task=self)
-        #
-        # @property
-        # def tasks(self):
-        #     return Task.objects.filter(list=self.list)
-
-
-def get_list_tasks(list):
-    return Task.objects.filter(list=list)
+        return "task %s" % self.title

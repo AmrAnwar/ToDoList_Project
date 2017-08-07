@@ -142,11 +142,3 @@ EMAIL_HOST_USER = 'amranwar945@gmail.com'
 EMAIL_HOST_PASSWORD = my_password,
 EMAIL_PORT = 587
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-#
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = 'smtp-mail.outlook.com'
-# EMAIL_HOST_USER = 'amranwar945@outlook.sa'
-# EMAIL_HOST_PASSWORD = my_password
-# EMAIL_PORT = 25
-# ACCOUNT_EMAIL_VERIFICATION = 'none'
-

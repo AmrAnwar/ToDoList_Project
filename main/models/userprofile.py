@@ -1,11 +1,8 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import pre_save, post_save
-
-
-def upload_location(instance, filename):
-    return "accounts/%s/%s" % (instance.id, filename)
+from django.db.models.signals import post_save
+from .helper import upload_location
 
 
 class UserProfile(models.Model):

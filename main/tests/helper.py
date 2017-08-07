@@ -1,6 +1,5 @@
 from django.core.urlresolvers import reverse
 import json
-from ..models import Sublist
 
 
 def view_test(**kwargs):
@@ -30,8 +29,6 @@ def view_test(**kwargs):
 
 
 def create_patch(**kwargs):
-    # for i,v in kwargs.items():
-    #     print i, v
     test_obj = kwargs['test_obj']
     self = kwargs['self']
     url = kwargs['url']
@@ -42,7 +39,6 @@ def create_patch(**kwargs):
                            data=json.dumps(data),
                            content_type='application/json')
     self.assertEqual(res.status_code, 201)
-
     res_id = res.data.get("id")
     data = {
         'title': "re-test",
@@ -55,3 +51,11 @@ def create_patch(**kwargs):
                             content_type='application/json')
     self.assertEqual(res.status_code, 200)
     self.assertEqual(res.data.get("title"), "re-test")
+    # test fail create
+    data = {
+        'my_title': 'tester'
+    }
+    res = self.client.post(url,
+                           data=json.dumps(data),
+                           content_type='application/json')
+    self.assertEqual(res.status_code, 200)

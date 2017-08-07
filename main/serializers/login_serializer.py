@@ -12,6 +12,10 @@ from rest_framework.serializers import (
 
 
 class LoginSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Login
+    user can inter (Username or Email) and password
+    """
     username = CharField(required=False, allow_blank=True)
     email = EmailField(label='Email Address', required=False, allow_blank=True)
 
@@ -25,6 +29,15 @@ class LoginSerializer(serializers.ModelSerializer):
         }
 
     def validate(self, data):
+        """
+        check user data
+        :param data:
+        :return: 4 cases -:
+            1- if not email or username, ValidationError("A username or email is required to login")
+            2- if user doesn't exist, ValidationError("This username/email is not valid")
+            3- check password failed, ValidationError("Incorrect credentials please try again")
+            4- if all pass, return entered data again
+        """
         email = data.get("email", None)
         username = data.get("username", None)
         password = data.get("password", None)
