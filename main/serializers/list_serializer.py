@@ -12,9 +12,8 @@ class ListModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = List
-        fields = ('id', 'title', 'timestamp',
-                  'archived', 'user', "tasks", "users",
-                  'finished', 'finished_time')
+        fields = ('id', 'title', 'timestamp', 'image',
+                  'archived', 'user', "tasks", "users",)
 
     def get_tasks(self, obj):
         """

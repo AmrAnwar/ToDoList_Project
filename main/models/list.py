@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 from django.conf import settings
-from django.utils import timezone
 from django.core.urlresolvers import reverse
 from .helper import upload_location
 
@@ -31,10 +30,6 @@ class List(models.Model):
     user = models.ForeignKey(User, default=1, related_name="users")
     title = models.CharField(null=False, blank=False, max_length=100)
     archived = models.BooleanField(default=False)
-    finished = models.BooleanField(default=False)
-    time_change = models.BooleanField(default=True)
-    finished_time = models.DateTimeField(auto_now_add=False,
-                                         null=True, blank=True, default=None)
     timestamp = models.DateTimeField(auto_now_add=True)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True,
                                    related_name="list_users")
@@ -59,23 +54,9 @@ class List(models.Model):
     def get_url(self):
         """
         get detail url for List object
-        :return:
+        :return: list detail url
         """
         return reverse("lists-detail", kwargs={'pk': self.id})
-
-    def save(self, *args, **kwargs):
-        """
-        check finished to change finished_time
-        :param args:
-        :param kwargs:
-        :return:
-        """
-        if self.finished and self.time_change:
-            self.finished_time = timezone.now()
-            self.time_change = False
-        if not self.finished and not self.time_change:
-            self.time_change = True
-        super(List, self).save()
 
 
 def get_user_lists(user=None):

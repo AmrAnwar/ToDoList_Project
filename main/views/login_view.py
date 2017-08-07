@@ -25,4 +25,3 @@ class LoginView(APIView):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             return Response(serializer.data)
-        return Response(serializer.errors)

@@ -31,9 +31,18 @@ class ListModelViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """
         get lists method
-        :return: queryset(lists) for each user
+        :return: 2 cases
+            1- /lists , queryset(lists) if user in it
+            2- /?owner=true , the lists which were created by user
         """
+        owner = self.request.GET.get("owner")
+        query = self.request.GET.get("search")
         qs = get_user_lists(user=self.request.user, )
+        if query:
+            qs = qs.filter(title__icontains=query)
+        if owner == 'True' or owner == 'true':
+            qs = List.objects.active(user=self.request.user)
+
         return qs
 
     def perform_create(self, serializer):
@@ -76,6 +85,7 @@ class ListModelViewSet(viewsets.ModelViewSet):
                 3- if serializer valid and obj pk found, not in list, return 200
         """
         serializer = AddUserListSerializer(data=request.data)
+        # valid in all cases
         if serializer.is_valid(raise_exception=True):
             user_id = serializer.data.get("user_id")
             list = get_object_or_404(List, pk=pk)
@@ -85,8 +95,6 @@ class ListModelViewSet(viewsets.ModelViewSet):
                 return Response(status=200)
             else:
                 raise ValidationError("user is already in the list")
-        else:
-            return Response(serializer.errors)
 
     @detail_route(methods=['post'], url_path='remove-user', )
     def remove_user(self, request, pk=None):
@@ -100,6 +108,7 @@ class ListModelViewSet(viewsets.ModelViewSet):
                 3- if serializer valid and obj pk found, not in list, return 200
         """
         serializer = AddUserListSerializer(data=request.data)
+        # valid in all cases
         if serializer.is_valid(raise_exception=True):
             user_id = serializer.data.get("user_id")
             list = get_object_or_404(List, pk=pk)
@@ -107,11 +116,8 @@ class ListModelViewSet(viewsets.ModelViewSet):
             if user in list.users.all():
                 list.users.remove(user)
                 return Response(status=200)
-
             else:
                 raise ValidationError("user isn't in the list")
-        else:
-            return Response(serializer.errors)
 
     @detail_route(methods=['post'], url_path='send-email', )
     def post(self, request, pk=None):
@@ -123,6 +129,7 @@ class ListModelViewSet(viewsets.ModelViewSet):
         """
         list = get_object_or_404(List, pk=pk)
         serializer = EmailListSerializer(data=request.data)
+        # valid in all cases
         if serializer.is_valid(raise_exception=True):
             id_list = serializer.data.get('email_list')
             email_list = [get_object_or_404(User, pk=pk).email for pk in id_list]
@@ -131,5 +138,3 @@ class ListModelViewSet(viewsets.ModelViewSet):
                            "amranwar945@gamil.com",
                            email_list)
             return Response(status=200)
-        else:
-            return Response(serializer.errors)

@@ -3,3 +3,4 @@ from .task import Task
 from .sublist import Sublist
 from .comment import Comment
 from .userprofile import UserProfile
+from .task import list_tasks

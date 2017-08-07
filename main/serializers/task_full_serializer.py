@@ -15,7 +15,8 @@ class TaskFullModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ('id', 'user', 'title', 'timestamp', 'archived', 'sublist', 'comments')
+        fields = ('id', 'user', 'title', 'timestamp', 'archived', 'sublist', 'comments',
+                  'finished', 'finished_time', 'list')
 
     def get_sublist(self, obj):
         """

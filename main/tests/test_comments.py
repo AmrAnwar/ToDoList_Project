@@ -26,9 +26,6 @@ class TestComments(TestMain):
         comment = get_object_or_404(Comment, pk=1)
         # test children method
         self.assertEqual(list(comment.children()), [])
-        # test parent
-        # print comment.is_parent
-        # self.assertEqual(comment.is_parent, False)
         self.assertEqual(unicode(comment), "comment")
         res = self.client.get(reverse("tasks-detail",
                                       kwargs={'pk': 1}))

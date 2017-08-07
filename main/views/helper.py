@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 
 
 def create_item(*args, **kwargs):
@@ -30,3 +31,12 @@ def create_item(*args, **kwargs):
         return Response(Serializer(created_obj).data, status=201)
     else:
         return Response(serializer.errors)
+
+
+def filter_by_today(qs=None):
+    new_qs = []
+    for obj in qs:
+        if obj.timestamp.now().date() == timezone.now().date():
+            new_qs.append(obj.id)
+
+    return qs.filter(id__in=new_qs)

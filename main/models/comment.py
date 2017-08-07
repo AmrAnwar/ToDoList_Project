@@ -28,13 +28,3 @@ class Comment(models.Model):
         """
         return Comment.objects.filter(parent=self)
 
-    @property
-    def is_parent(self):
-        """
-        check if comment has Parent
-        :return:
-        """
-        if self.parent is not None:
-            return True
-        return False
-
