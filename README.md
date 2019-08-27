@@ -1,7 +1,11 @@
 # ToDoList_Project
-Restful API for ToDoList_Project
+Restful API for my [TODO project](https://github.com/AmrAnwar/ToDoList_Django_Project/)
 
-##MyToDo List
+## About the project: 
+
+this repo contains the api endpoints for my [TODO Django project](https://github.com/AmrAnwar/ToDoList_Django_Project/), for more imformation please visit the link.
+
+## MyToDo List
 ### models
 * [x] list model
 * [x] task model
