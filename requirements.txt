@@ -5,7 +5,7 @@ django-sites==0.9
 djangorestframework==3.6.3
 djangorestframework-jwt==1.11.0
 olefile==0.44
-Pillow==4.2.1
+Pillow==8.1.1
 pkg-resources==0.0.0
 PyJWT==1.5.2
 pytz==2017.2
